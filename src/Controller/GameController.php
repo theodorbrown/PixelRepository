@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Form\GameType;
+use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,9 +22,15 @@ class GameController extends AbstractController {
     /**
      * @Route ("/")
      */
-    public function list(): Response {
-        return $this->render("game/list.html.twig");
-        
+    public function list(GameRepository $gameRepository): Response {
+
+        //retourne tous les jeux de la base
+        $entities = $gameRepository->findAll();
+
+        return $this->render("game/list.html.twig", [
+            'entities' => $entities
+        ]);
+
     }
 
 
