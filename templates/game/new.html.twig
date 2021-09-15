@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<h1 class="">Nouveau jeu</h1>
-{{ form(form) }}
+    <h1 class="">Nouveau jeu</h1>
+    {% embed "decorator/_form.html.twig" %}
+    {% endembed %}
 
 {% endblock %}

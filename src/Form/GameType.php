@@ -16,7 +16,6 @@ class GameType extends AbstractType {
             ->add('title')
             ->add('content')
             ->add('enabled')
-            ->add('createdAt')
         ;
     }
 
