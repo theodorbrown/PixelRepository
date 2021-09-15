@@ -17,6 +17,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 
 class GameController extends AbstractController {
+
+    /**
+     * @Route ("/")
+     */
+    public function list(): Response {
+        return $this->render("game/list.html.twig");
+        
+    }
+
+
     /**
      * @Route ("/new")
      */
