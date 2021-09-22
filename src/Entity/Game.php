@@ -44,6 +44,13 @@ class Game {
      */
     private $createdAt;
 
+    /**
+     * @var \DateTime
+     * 
+     * @ORM\Column(type="datetime")
+     */
+    private $publishedAt;
+
 
     public function __construct()
     {
@@ -160,6 +167,30 @@ class Game {
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of publishedAt
+     *
+     * @return  \DateTime
+     */ 
+    public function getPublishedAt()
+    {
+        return $this->publishedAt;
+    }
+
+    /**
+     * Set the value of publishedAt
+     *
+     * @param  \DateTime  $publishedAt
+     *
+     * @return  self
+     */ 
+    public function setPublishedAt(\DateTime $publishedAt)
+    {
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }
