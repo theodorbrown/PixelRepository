@@ -15,16 +15,17 @@ class GameType extends AbstractType {
         //ajout des champs formulaire
         $builder
             ->add('title', null, [
-                'label' => 'Titre du jeu'
+                'label' => 'game.title'
             ])
             ->add('content', null, [
-                'label' => 'Description du jeu',
+                'help' => 'game.content_help',
+                'label' => 'game.content',
                 'attr' => [
                     'rows' => 5
                 ]
             ])
             ->add('enabled', ChoiceType::class, [
-                'label' => 'Publié',
+                'label' => 'game.enabled',
                 'choices' => [
                     'Oui' => true,
                     'Non' => false

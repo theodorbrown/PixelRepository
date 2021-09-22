@@ -2,10 +2,10 @@
 
 {% block content %}
 
-<h1>Liste des jeux :</h1>
+<h1>{{ 'game.list'|trans }}</h1>
 
 <div class="d-flex justify-content-end mb-3">
-    <a href="{{ path('app_game_new') }}" class="btn btn-success">Nouveau Jeu</a>
+    <a href="{{ path('app_game_new') }}" class="btn btn-success">{{ 'game.new.title'|trans|raw }}</a>
 </div>
 
 {#{{ dump(entities) }}#}
@@ -14,7 +14,10 @@
         <li class="list-group-item">
             <div class="d-flex w-100 justify-content-between">
                 <h5> {{entity.title}} </h5>
-                <a href="{{ path('app_game_edit',  {'id':entity.id }) }}" class="btn btn-light"><i class="fas fa-edit"></i></a>
+                <div>
+                    <a href="{{ path('app_game_edit',  {'id':entity.id }) }}" class="btn btn-light"><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('app_game_delete',  {'id':entity.id }) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                </div>
             </div>
         </li>
     {% endfor %}

@@ -4,7 +4,7 @@
 <h1>Supprimer un jeu</h1>
 <form action="" method="post">
     <div class="alert alert-danger">
-        Voulez-vous vraiment supprimer ce jeu : {{entity.title}} ?
+        {{ 'game.delete.message'|trans({"%game%" : entity.title })|raw }}
     </div>
 
     <button type="submit" class="btn btn-danger">Oui</button>
