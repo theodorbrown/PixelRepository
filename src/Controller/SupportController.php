@@ -42,6 +42,7 @@ class SupportController extends AbstractController
         ]);
     }
 
+    /*
     #[Route('/{id}', name: 'support_show', methods: ['GET'])]
     public function show(Support $support): Response
     {
@@ -49,6 +50,7 @@ class SupportController extends AbstractController
             'support' => $support,
         ]);
     }
+    */
 
     #[Route('/{id}/edit', name: 'support_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Support $support): Response
@@ -68,15 +70,19 @@ class SupportController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'support_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'support_delete', methods: ['GET', 'POST'])]
     public function delete(Request $request, Support $support): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$support->getId(), $request->request->get('_token'))) {
+    {                                                                               //suppr _
+        if ($this->isCsrfTokenValid('delete'.$support->getId(), $request->request->get('token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($support);
             $entityManager->flush();
+
+            return $this->redirectToRoute('support_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->redirectToRoute('support_index', [], Response::HTTP_SEE_OTHER);
+        return $this->render("support/delete.html.twig", [
+            'entity' => $support
+        ]);
     }
 }

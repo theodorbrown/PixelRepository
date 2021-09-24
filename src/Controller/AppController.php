@@ -8,14 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController {
 
-/**
- * @Route("/")
- */
-public function home(): Response {
-    return $this->render("app/home.html.twig", [
-        'name' => 'Ragnar',
-        'commentaire' => 'le bucheron'
-    ]);
-}
-
+    /**
+     * @Route("/")
+     */
+    public function home(): Response {
+        return $this->render("app/home.html.twig");
+    }
 }

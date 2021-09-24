@@ -1,11 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends "front-layout.twig" %}
 
-{% block title %}New Support{% endblock %}
+{% block content %}
 
-{% block body %}
-    <h1>Create new Support</h1>
+    <h1 class="">Nouveau support</h1>
+    {% embed "decorator/_form.html.twig" %}
+    {% endembed %}
 
-    {{ include('support/_form.html.twig') }}
-
-    <a href="{{ path('support_index') }}">back to list</a>
 {% endblock %}
