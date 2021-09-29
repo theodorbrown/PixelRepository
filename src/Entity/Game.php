@@ -59,6 +59,7 @@ class Game {
 
     /**
      * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
+     * le paramètre cascade persist remove permet de faire persister une image (en BD)
      */
     private $image;
 
