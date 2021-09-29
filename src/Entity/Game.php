@@ -58,10 +58,16 @@ class Game {
     private $support;
 
     /**
-     * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
+     * orphanRemoval indique que l'entité Image est supprimé  s'il n'y a plus de connexion avec l'entité Game
+     * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"}, orphanRemoval=true)
      * le paramètre cascade persist remove permet de faire persister une image (en BD)
      */
     private $image;
+
+    /**
+     * @var bool
+     */
+    private $deleteImage = false;
 
 
     public function __construct()
@@ -227,6 +233,34 @@ class Game {
     public function setImage(?Image $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deleteImage
+     *
+     * @return  bool
+     */ 
+    public function getDeleteImage()
+    {
+        return $this->deleteImage;
+    }
+
+    /**
+     * Set the value of deleteImage
+     *
+     * @param  bool  $deleteImage
+     *
+     * @return  self
+     */ 
+    public function setDeleteImage(bool $deleteImage)
+    {
+        $this->deleteImage = $deleteImage;
+
+        if ($deleteImage) {
+            $this->image = null;
+        }
 
         return $this;
     }

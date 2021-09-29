@@ -38,6 +38,12 @@ class Image
      */
     private $file;
 
+    /**
+     * @var ?string
+     * Chemin de l'ancien fichier pour pouvoir le supprimer
+     */
+    private $oldPath;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -80,9 +86,9 @@ class Image
      *
      * @return  self
      */ 
-    public function setFile($file)
-    {
+    public function setFile($file) {
         $this->file = $file;
+        $this->oldPath = $this->path; //Sauvegarde le chemin de l'ancien fichier pour le supprimer lors de l'upload du nouveau
         $this->path = ""; //Modifie cette valeur pour activer la modification par Doctrine
 
         return $this;
@@ -101,7 +107,7 @@ class Image
      * Génération d'un nom de fichier pour éviter les doublons
      * 
      * @ORM\PrePersist()
-     * @ORM\PostUpdate()
+     * @ORM\PreUpdate()
      * Permet d'appeler automatiquement la méthode avant le persist et de faire un upload
      */
     public function generatePath(): void {
@@ -118,6 +124,11 @@ class Image
      * @ORM\PostUpdate()
      */
     public function upload(): void {
+        //test si le fichier existe
+        if (is_file($this->getPublicRootDir().$this->oldPath)) {
+            unlink($this->getPublicRootDir().$this->oldPath);
+        }
+
         if($this->file instanceof UploadedFile) {
             $this->file->move($this->getPublicRootDir(), $this->path);
         }
@@ -125,5 +136,17 @@ class Image
 
     public function getWebPath(): string {
         return '/uploads/'.$this->path;
+    }
+
+    /**
+     * @ORM\PreRemove()
+     */
+    //avant de supprimer l'entité on va supprimer le fichier
+    public function remove()
+    {
+        // Test si le fichier existe
+        if (is_file($this->getPublicRootDir().$this->path)) {
+            unlink($this->getPublicRootDir().$this->path);
+        }
     }
 }
