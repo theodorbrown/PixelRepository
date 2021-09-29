@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Game;
+use App\Entity\Support;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,6 +38,16 @@ class GameType extends AbstractType {
             ->add('publishedAt', null, [
                 'label' => 'Date de publication',
                 'date_widget' => 'single_text'
+            ])
+            ->add('support', EntityType::class, [
+                'class' => Support::class,
+                'required'=> false,
+                //gouper par constructeur
+                'group_by' => 'constructor',
+                'query_builder' => function (EntityRepository $er){
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.year');
+                }
             ])
         ;
     }

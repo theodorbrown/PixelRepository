@@ -51,6 +51,11 @@ class Game {
      */
     private $publishedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Support::class, inversedBy="games")
+     */
+    private $support;
+
 
     public function __construct()
     {
@@ -191,6 +196,18 @@ class Game {
     public function setPublishedAt(\DateTime $publishedAt)
     {
         $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+    public function getSupport(): ?Support
+    {
+        return $this->support;
+    }
+
+    public function setSupport(?Support $support): self
+    {
+        $this->support = $support;
 
         return $this;
     }
