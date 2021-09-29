@@ -49,6 +49,9 @@ class GameType extends AbstractType {
                         ->orderBy('s.year');
                 }
             ])
+
+            //Ajout du formulaire
+            ->add('image', ImageType::class)
         ;
     }
 

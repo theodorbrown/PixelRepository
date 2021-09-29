@@ -53,8 +53,14 @@ class Game {
 
     /**
      * @ORM\ManyToOne(targetEntity=Support::class, inversedBy="games")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $support;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
+     */
+    private $image;
 
 
     public function __construct()
@@ -208,6 +214,18 @@ class Game {
     public function setSupport(?Support $support): self
     {
         $this->support = $support;
+
+        return $this;
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
