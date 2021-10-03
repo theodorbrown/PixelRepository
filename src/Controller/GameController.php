@@ -56,6 +56,7 @@ class GameController extends AbstractController {
             $entityManager->persist($entity); //Prépare la requête : plusieurs persists sont possible
             $entityManager->flush(); //Execute la requête
 
+            //message de succès (pop up)
             $this->addFlash('success', $translator->trans('game.new.success', ['%game%' => $entity->getTitle()]));
 
             //redirection
