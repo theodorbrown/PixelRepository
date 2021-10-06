@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @ORM\Entity(repositoryClass=ImageRepository::class)
  * 
  * Indique que l'entité a un cycle de vie (événements Doctrine)
+ * Appel des méthodes en fonctiondes cycles de vie des entités (avant un persist)
  * @ORM\HasLifecycleCallbacks
  */
 class Image
@@ -130,6 +131,7 @@ class Image
         }
 
         if($this->file instanceof UploadedFile) {
+            //va chercher le fichier dans le dossier temporaire et le place dans le notre
             $this->file->move($this->getPublicRootDir(), $this->path);
         }
     }
