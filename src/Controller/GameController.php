@@ -28,9 +28,11 @@ class GameController extends AbstractController {
      */
     public function list(GameRepository $gameRepository): Response {
 
+        //Si connecté
         if($this->getUser() instanceof User) {
             $entities = $gameRepository->findAll(); //tous les jeux
             $count = $gameRepository->count([]);
+        //Sinon
         } else {
             $entities = $gameRepository->findEnabled();
             $count = $gameRepository->count(['enabled' => true]);
@@ -42,7 +44,6 @@ class GameController extends AbstractController {
         ]);
 
     }
-
 
     /**
      * @Route ("/new")
