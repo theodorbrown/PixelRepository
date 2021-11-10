@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Game;
 use App\Entity\Support;
 use Doctrine\ORM\EntityRepository;
@@ -57,6 +58,14 @@ class GameType extends AbstractType {
             ->add('deleteImage', CheckboxType::class, [
                 'label' => 'game.delete_image',
                 'required' => false
+            ])
+
+            //ajouter un champ
+            ->add('categories', EntityType::class, [
+                'label' => 'game.categories',
+                'multiple' => true,
+                'expanded' => true,
+                'class' => Category::class
             ])
         ;
     }
