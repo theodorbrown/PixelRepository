@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Entity\User;
+use App\Event\GameEvent;
+use App\Event\GameEvents;
 use App\Form\GameType;
 use App\Repository\GameRepository;
 use Doctrine\ORM\EntityManager;
@@ -14,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Définie un préfix pour toutes les routes de ce controller
@@ -26,21 +29,30 @@ class GameController extends AbstractController {
     /**
      * @Route ("/")
      */
-    public function list(GameRepository $gameRepository): Response {
+    public function list(Request $request, GameRepository $gameRepository): Response {
 
+    /*
         //Si connecté
-        if($this->getUser() instanceof User) {
-            $entities = $gameRepository->findAll(); //tous les jeux
-            $count = $gameRepository->count([]);
-        //Sinon
-        } else {
-            $entities = $gameRepository->findEnabled();
-            $count = $gameRepository->count(['enabled' => true]);
-        }
-        
+    if($this->getUser() instanceof User) {
+        $entities = $gameRepository->findAll(); //tous les jeux
+        $count = $gameRepository->count([]);
+    //Sinon
+    } else {
+        $entities = $gameRepository->findEnabled();
+        $count = $gameRepository->count(['enabled' => true]);
+    }
+     */
+        $page = $request->get('p', 1);
+        $itemCount = 1;
+
+        $entities = $gameRepository->findPagination($page, $itemCount);
+         
+        $pageCount = \ceil($entities->count() / $itemCount);
+
         return $this->render("game/list.html.twig", [
             'entities' => $entities,
-            'count' => $count
+            'count' => $entities->count(),
+            'pageCount' => $pageCount
         ]);
 
     }
@@ -50,7 +62,7 @@ class GameController extends AbstractController {
      * @IsGranted("ROLE_USER")
      */
     //EntityManagerInterface est un service. Objet que Symfony nous crée
-    public function new(EntityManagerInterface $entityManager, Request $request, TranslatorInterface $translator): Response {
+    public function new(EntityManagerInterface $entityManager, Request $request, TranslatorInterface $translator, EventDispatcherInterface $eventDispatcher): Response {
 
         //Autre manière d'obtenir EntityManager
         //$entityManager = $this.getDoctrine()->getManager();
@@ -66,6 +78,8 @@ class GameController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($entity); //Prépare la requête : plusieurs persists sont possible
             $entityManager->flush(); //Execute la requête
+
+            $eventDispatcher->dispatch(new GameEvent($entity), GameEvents::GAME_ADDED);
 
             //message de succès (pop up)
             $this->addFlash('success', $translator->trans('game.new.success', ['%game%' => $entity->getTitle()]));

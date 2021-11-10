@@ -12,8 +12,13 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class GameType extends AbstractType {
+
+    public function __construct(private Security $security) {
+
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -28,16 +33,20 @@ class GameType extends AbstractType {
                 'attr' => [
                     'rows' => 5
                 ]
-            ])
-            ->add('enabled', ChoiceType::class, [
+                ]);
+
+        IF($this->security->isGranted('ROLE_ADMIN')) {
+            $builder->add('enabled', ChoiceType::class, [
                 'label' => 'game.enabled',
                 'choices' => [
                     'Oui' => true,
                     'Non' => false
                 ],
                 'expanded' => true
-            ])
-            ->add('publishedAt', null, [
+            ]);
+        }
+
+        $builder->add('publishedAt', null, [
                 'label' => 'Date de publication',
                 'date_widget' => 'single_text'
             ])

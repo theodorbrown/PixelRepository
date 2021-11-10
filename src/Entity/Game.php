@@ -37,7 +37,7 @@ class Game {
      * 
      * @ORM\Column(type="boolean")
      */
-    private $enabled;
+    private $enabled = false;
 
     /**
      * @var \DateTime
