@@ -35,7 +35,7 @@ class GameType extends AbstractType {
                 ]
                 ]);
 
-        IF($this->security->isGranted('ROLE_ADMIN')) {
+        if($this->security->isGranted('ROLE_ADMIN')) {
             $builder->add('enabled', ChoiceType::class, [
                 'label' => 'game.enabled',
                 'choices' => [
