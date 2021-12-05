@@ -4,6 +4,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity
@@ -73,6 +74,8 @@ class Game {
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="games")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Ignore()
      */
     private $user;
 
